@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <title>Countdown Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+        }
+        .counter-container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .counter-header {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .counter-number {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #009688;
+        }
+        .counter-button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #009688;
+            color: white;
+            cursor: pointer;
+        }
+        .counter-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="counter-container"></div>
+    <script type="text/babel">
+
+        document.addEventListener('click', () => {
+            const audio = document.querySelector('audio');
+            if (audio) {
+                audio.play();
+            }
+        });
+
+
+        class Counter extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    count: 0
+                };
+            }
+
+            increment = () => {
+                this.setState(prevState => ({
+                    count: prevState.count + 1
+                }));
+            }
+
+            decrement = () => {
+                this.setState(prevState => ({
+                    count: prevState.count - 1
+                }));
+            }
+
+            reset = () => {
+                this.setState({
+                    count: 0
+                });
+            }
+
+            render() {
+                const { count } = this.state;
+
+                return (
+                    <div>
+                        <h1 class="counter-header">{count === 10 ? 'Challenge Completed!' : 'Countdown Challenge'}</h1>
+                        <div class="counter-number">{count === 10 ? 'Done 🎉' : count}</div>
+                        <button class="counter-button" onClick={this.increment} disabled={count >= 10}>+</button>
+                        <button class="counter-button" onClick={this.decrement} disabled={count === 0}>-</button>
+                        <button class="counter-button" onClick={this.reset} disabled={count < 10}>Reset</button>
+                        <audio autoPlay>
+                        <source src="Persona 4-Heaven.mp3" type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                );
+            }
+        }
+
+        class App extends React.Component {
+            render() {
+                return (
+                    <div class="counter-container">
+                        <Counter />
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<App />, document.querySelector("#app"));
+    </script>
+</body>
+</html>
